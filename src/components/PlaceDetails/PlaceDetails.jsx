@@ -5,8 +5,8 @@ import PhoneIcon from '@material-ui/icons/Phone';
 import Rating from '@material-ui/lab/rating';
 
 import makeStyles from './styles';
+import { Phone } from "@material-ui/icons";
 const PlaceDetails= ({place}) =>{
-     console.log(place);
      const classes = makeStyles();
 
      return(
@@ -25,6 +25,10 @@ const PlaceDetails= ({place}) =>{
                     <Typography gutterBottom variant = "subtitle1">{place.price_level}</Typography>
                </Box>
                <Box display = "flex" justifyContent="space-between">
+               <Rating size = "small" value = {Number(place.rating)} readOnly/>
+                    <Typography gutterBottom variant = "subtitle1">Out of {place.num_reviews} reviews</Typography>
+               </Box>
+               <Box display = "flex" justifyContent="space-between">
                     <Typography variant = "subtitle1">Ranking</Typography>
                     <Typography gutterBottom variant = "subtitle1">{place.ranking}</Typography>
                </Box>
@@ -34,7 +38,27 @@ const PlaceDetails= ({place}) =>{
                               place.open_now_text? place.open_now_text: "Not available"
                     }</Typography>
                </Box>
-               
+               { place?.cuisine?.map(({name})=>(
+                    <Chip key = {name} size = "small" label = {name} className = {classes.chip}/>
+               ))}
+               {place?.address && (
+                    <Typography gutterbottom variant = "subtitle2" color = 'textSecondary' className = {classes.subtitle}>
+                         <LocationOnIcon/> {place.address_obj.street1}
+                    </Typography> 
+               )}
+               { place?.phone && (
+                    <Typography gutterbottom variant = "subtitle2" color = 'textSecondary' className = {classes.subtitle}>
+                         <PhoneIcon/> {place.phone}
+                    </Typography>
+               )}
+               <CardActions>
+                    <Button size = 'small' color = "primary" onClick = {()=>window.open(place.web_url,'_blank')}>
+                         Trip Advisor
+                    </Button>
+                    <Button size = 'small' color = "primary" onClick = {()=>window.open(place.website,'_blank')}>
+                         Website
+                    </Button>
+               </CardActions> 
           </CardContent>
         </Card>
         
